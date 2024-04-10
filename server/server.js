@@ -30,3 +30,4 @@ app.use(cors())
 app.listen(process.env.PORT, () => {
     console.log("Server is running")
 })
+

@@ -43,3 +43,5 @@ demarrer le serveur
 `npm run dev`
 
 ### Fonctionnement de l'API
+
+Description des schemas...

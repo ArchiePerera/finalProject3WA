@@ -45,3 +45,4 @@ demarrer le serveur
 ### Fonctionnement de l'API
 
 Description des schemas...
+Et test de connexion sur terminal linux

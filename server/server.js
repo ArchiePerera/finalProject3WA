@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import { connectDB } from "./config/database.js"   
 import cors from "cors"
+import router from "./routes/router.js"
 
 // mise en place d'express
 const app = express()
@@ -24,7 +25,8 @@ app.use(express.static("public"))
 // prise en compte des "Cors Policies"
 app.use(cors())
 
-
+// chemin de l'API
+app.use("/api", router)
 
 // écoute des requêtes entrantes
 app.listen(process.env.PORT, () => {

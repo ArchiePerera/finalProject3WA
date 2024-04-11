@@ -43,3 +43,37 @@ export const register = async(req, res) => {
         res.status(400).json({ message: "Impossible de créer un compte" })
     }
 }
+
+export const getAllUsers = async (req, res) => {
+    try {
+        
+        // ON VA EXCLURE LE PASSWORD
+        const users = await User.find({}).select("-password")
+
+        res.status(200).json(users)
+
+    }
+    catch (e) {
+        res.status(400).json({ message: "Impossible de récup les utilisateurs" })
+    }
+}
+
+export const getOneUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+        
+        // const currentUser = await User.findById(req.userId)
+        // const searchUser = await User.findById(id) 
+        
+        // if (currentUser.role === "user" && currentUser.id !== searchUser.id) {
+        //     return res.status(403).json({message: "Accès refusé"})
+        // }
+        
+        const user = await User.findById(id)
+        
+        res.status(200).json(user)
+        
+    } catch (e) {
+        res.status(400).json({message: "Impossible de récupérer l'utilisateur"})
+    }
+}

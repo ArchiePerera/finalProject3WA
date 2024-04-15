@@ -5,7 +5,7 @@ const articleSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
     },
     summary: {
         type: String,
@@ -32,9 +32,13 @@ const articleSchema = new mongoose.Schema({
     },
     rating: {
         type: Array,
+        required: true,
         default: [],
     }
 
 }, {
     timestamps: true,
 })
+
+const Article = mongoose.model("Article", articleSchema)
+export default Article

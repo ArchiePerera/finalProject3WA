@@ -74,7 +74,7 @@ export const getAllUsers = async (req, res) => {
 
     catch (e) {
 
-        res.status(400).json({ message: "Impossible de récup les utilisateurs" })
+        res.status(400).json({ message: "Impossible de récupérer les utilisateurs" })
 
     }
 }
@@ -82,7 +82,7 @@ export const getAllUsers = async (req, res) => {
 export const getOneUser = async (req, res) => {
 
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         
         // const currentUser = await User.findById(req.userId)
         // const searchUser = await User.findById(id) 

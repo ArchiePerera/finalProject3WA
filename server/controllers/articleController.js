@@ -32,5 +32,42 @@ export const createArticle = async (req, res) => {
         res.status(400).json({ message: "impossible de créer un article", e })
 
     }
+}
+
+export const getAllArticles = async (req, res) => {
+
+    try {
+
+        const articles = await Article.find({})
+
+        res.status(200).json(articles)
+
+    }
+
+    catch {
+
+        res.status(400).json({ message: "Impossible de récupérer les articles" })
+
+    }
+
+}
+
+export const getOneArticle = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        const article = await Article.findById(id)
+
+        res.status(200).json(article)
+
+    }
+
+    catch {
+
+        res.status(400).json({ message: "Impossible de récupérer l'article" })
+
+    }
 
 }

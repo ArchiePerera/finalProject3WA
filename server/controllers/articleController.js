@@ -71,3 +71,49 @@ export const getOneArticle = async (req, res) => {
     }
 
 }
+
+export const editArticle = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        const { title, summary, content } = req.body
+
+        const editArticle = {
+            title,
+            summary,
+            content,
+        }
+
+        await Article.findByIdAndUpdate(id, editArticle)
+
+        res.status(200).json({ message: "Article bien mis à jour" })
+
+    }
+
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de mettre à jour l'article" })
+
+    }
+
+}
+
+export const deleteArticle = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await Article.findByIdAndDelete(id)
+
+        res.status(200).json({ message: "l'article a bien été supprimé" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de supprimer l'article" })
+
+    }
+}

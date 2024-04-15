@@ -5,7 +5,7 @@ import { createArticle } from "../controllers/articleController.js"
 const userRouter = express.Router()
 
 userRouter.post("/register", register)
-userRouter.get("/all", getAllUsers)
+userRouter.get("/", getAllUsers)
 userRouter.get("/:id", getOneUser)
 
 userRouter.post("/new", createArticle)

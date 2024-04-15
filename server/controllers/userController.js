@@ -74,7 +74,7 @@ export const getAllUsers = async (req, res) => {
 
     catch (e) {
 
-        res.status(400).json({ message: "Impossible de récupérer les utilisateurs" })
+        res.status(400).json({ message: "Impossible de récupérer les profils utilisateurs" })
 
     }
 }
@@ -97,7 +97,68 @@ export const getOneUser = async (req, res) => {
         
     } catch (e) {
 
-        res.status(400).json({message: "Impossible de récupérer l'utilisateur"})
+        res.status(400).json({message: "Impossible de récupérer le profil selectionné"})
         
     }
+}
+
+export const modifyUser = async (req, res) => {
+
+        try {
+        
+            const { id } = req.params
+            
+            const { firstName, lastName, email } = req.body
+
+            console.log(req.body)
+            
+            // Sécurité
+            
+            if (firstName && lastName && email) {
+                if(firstName && firstName.trim() === "" ||
+                lastName && lastName.trim() === "" ||
+                email && email.trim() === ""
+                ) {
+                    return res.status(400).json({message: "Veuillez remplir tous les champs !"})
+                }
+            }
+
+            
+            const editUser = {
+                firstName,
+                lastName,
+                email,
+            }
+
+
+            
+            await User.findByIdAndUpdate(id, editUser)
+            
+            res.status(200).json({message: "Profil mis à jour"})
+        }
+        catch (e) {
+
+            res.status(400).json({ message: "Impossible de mettre à jour le profil", e })
+
+        }
+
+}
+
+export const deleteUser = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await User.findByIdAndDelete(id)
+
+        res.status(200).json({ message: "Utilisateur supprimé" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de supprimer l'utilisateur" })
+
+    }
+
 }

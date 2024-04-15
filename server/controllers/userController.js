@@ -4,19 +4,27 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export const register = async(req, res) => {
+export const register = async (req, res) => {
 
     try {
 
-        const { username, password } = req.body;
+        const { firstName, lastName, email, password } = req.body;
 
         // PWD: 1 Maj, 1M, 1caractère spé, 1 chiffre
         // source: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
         const checkPwd = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{8,55}$/
 
+        // EMAIL REGEX
+        // source: https://regexr.com/3e48o
+        const checkEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+
+        console.log(req.body)
+
         // Sécurité
 
-        if (username.trim() === "" ||
+        if (firstName.trim() === "" ||
+            lastName.trim() === "" ||
+            email.trim() === "" ||
             password.trim() === "") {
             return res.status(400).json({ message: "Veuillez remplir tous les champs" })
         }
@@ -26,11 +34,18 @@ export const register = async(req, res) => {
         if (!checkPwd.test(password)) {
             return res.status(401).json({ message: "Le mot de passe ne respecte pas les conditions" })
         }
+        if (!checkEmail.test(email)) {
+            return res.status(401).json({ message: "l'email n'est pas valide"})
+        }
 
         const newUser = new User({
-            username,
-            password
+            firstName,
+            lastName,
+            email,
+            password,
         })
+
+        console.log(newUser)
 
         // IL VA EXECUTE LE HACHAGE DE MOT DE PASSE AVANT DE SAUVEGARDER EN BDD
         // LE HOOK PRE SERA EXECUTE
@@ -40,11 +55,14 @@ export const register = async(req, res) => {
 
     }
     catch (e) {
+
         res.status(400).json({ message: "Impossible de créer un compte" })
+
     }
 }
 
 export const getAllUsers = async (req, res) => {
+
     try {
         
         // ON VA EXCLURE LE PASSWORD
@@ -53,12 +71,16 @@ export const getAllUsers = async (req, res) => {
         res.status(200).json(users)
 
     }
+
     catch (e) {
+
         res.status(400).json({ message: "Impossible de récup les utilisateurs" })
+
     }
 }
 
 export const getOneUser = async (req, res) => {
+
     try {
         const {id} = req.params;
         
@@ -74,6 +96,8 @@ export const getOneUser = async (req, res) => {
         res.status(200).json(user)
         
     } catch (e) {
+
         res.status(400).json({message: "Impossible de récupérer l'utilisateur"})
+        
     }
 }

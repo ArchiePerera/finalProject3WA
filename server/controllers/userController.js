@@ -104,7 +104,7 @@ export const login = async (req, res) => {
     }
     catch (e) {
 
-        res.status(401).json({ message: "Impossible de se connecter", erreur: e })
+        res.status(401).json({ message: "Impossible de se connecter" })
 
     }
 
@@ -133,12 +133,12 @@ export const getOneUser = async (req, res) => {
     try {
         const { id } = req.params;
         
-        // const currentUser = await User.findById(req.userId)
-        // const searchUser = await User.findById(id) 
+        const currentUser = await User.findById(req.userId)
+        const searchUser = await User.findById(id) 
         
-        // if (currentUser.role === "user" && currentUser.id !== searchUser.id) {
-        //     return res.status(403).json({message: "Accès refusé"})
-        // }
+        if (currentUser.role === "user" && currentUser.id !== searchUser.id) {
+            return res.status(403).json({ message: "Accès refusé" })
+        }
         
         const user = await User.findById(id)
         
@@ -146,7 +146,7 @@ export const getOneUser = async (req, res) => {
         
     } catch (e) {
 
-        res.status(400).json({message: "Impossible de récupérer le profil selectionné"})
+        res.status(400).json({ message: "Impossible de récupérer le profil selectionné" })
         
     }
 }
@@ -168,7 +168,7 @@ export const modifyUser = async (req, res) => {
                 lastName && lastName.trim() === "" ||
                 email && email.trim() === ""
                 ) {
-                    return res.status(400).json({message: "Veuillez remplir tous les champs !"})
+                    return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
                 }
             }
 
@@ -183,11 +183,11 @@ export const modifyUser = async (req, res) => {
             
             await User.findByIdAndUpdate(id, editUser)
             
-            res.status(200).json({message: "Profil mis à jour"})
+            res.status(200).json({ message: "Profil mis à jour" })
         }
         catch (e) {
 
-            res.status(400).json({ message: "Impossible de mettre à jour le profil", e })
+            res.status(400).json({ message: "Impossible de mettre à jour le profil" })
 
         }
 

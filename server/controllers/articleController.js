@@ -18,10 +18,8 @@ export const createArticle = async (req, res) => {
             title,
             summary,
             content,
-            userId,
+            userId //req.userId,
         })
-
-        console.log(newArticle)
 
         await newArticle.save()
 
@@ -29,7 +27,7 @@ export const createArticle = async (req, res) => {
 
     } catch (e) {
 
-        res.status(400).json({ message: "impossible de créer un article", e })
+        res.status(400).json({ message: "impossible de créer un article" })
 
     }
 }

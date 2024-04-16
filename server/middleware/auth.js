@@ -30,8 +30,6 @@ export const isLogged = (req, res, next) => {
 
 export const isAuthorized = (roles) => {
     return async (req, res, next) =>{
-
-        console.log(req.userId)
         
         const user = await User.findById(req.userId)
         

@@ -1,5 +1,6 @@
 import User from "../models/userModel.js"
 import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -29,6 +30,12 @@ export const register = async (req, res) => {
             return res.status(400).json({ message: "Veuillez remplir tous les champs" })
         }
 
+        // Permet de savoir si l'utilisateur est déjà inscrit
+        const verifEmail = await User.findOne({ email })
+
+        if (verifEmail) {
+            return res.status(401).json({ message: "Cet email est déjà enregistré" })
+        }
 
         // Vérification du MDP respectant la regex
         if (!checkPwd.test(password)) {
@@ -45,10 +52,7 @@ export const register = async (req, res) => {
             password,
         })
 
-        console.log(newUser)
-
-        // IL VA EXECUTE LE HACHAGE DE MOT DE PASSE AVANT DE SAUVEGARDER EN BDD
-        // LE HOOK PRE SERA EXECUTE
+        // LE HOOK PRE SERA EXECUTE AVANT DE SAUVEGARDER EN BDD (Hash)
         await newUser.save()
 
         res.status(200).json({ message: "Compte créé avec succès" })
@@ -59,6 +63,51 @@ export const register = async (req, res) => {
         res.status(400).json({ message: "Impossible de créer un compte" })
 
     }
+}
+
+export const login = async (req, res) => {
+
+    try {
+
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            return res.status(404).json({ message: "Aucun utilisateur enregistré avec ce mail" })
+        }
+
+        const isValidPWd = bcrypt.compareSync(password, user.password)
+
+        if (!isValidPWd) {
+
+            return res.status(401).json({ message: "Mot de passe incorrect" })
+        }
+
+        // Création du token si MDP correct
+        const token = jwt.sign({
+            _id: user._id
+        }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION })
+
+
+
+        // ON RENVOIE ss MDP
+        res.status(200).json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            email: user.email,
+            token
+        })
+
+    }
+    catch (e) {
+
+        res.status(401).json({ message: "Impossible de se connecter", erreur: e })
+
+    }
+
 }
 
 export const getAllUsers = async (req, res) => {

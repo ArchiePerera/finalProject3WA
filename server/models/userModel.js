@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
         minLength: 8,
         maxLength: 55,
     },
-    status: {
+    role: {
         type: String,
         required: true,
         enum: ["user", "admin", "mentor", "student"],

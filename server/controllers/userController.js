@@ -9,9 +9,6 @@ export const register = async (req, res) => {
 
     try {
 
-        console.log(req.body)
-        console.log(req.file)
-
         const { firstName, lastName, email, password } = req.body;
 
         // PWD: 1 Maj, 1M, 1caractère spé, 1 chiffre

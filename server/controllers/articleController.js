@@ -45,7 +45,7 @@ export const getAllArticles = async (req, res) => {
 
     }
 
-    catch {
+    catch (e) {
 
         res.status(400).json({ message: "Impossible de récupérer les articles" })
 
@@ -65,7 +65,7 @@ export const getOneArticle = async (req, res) => {
 
     }
 
-    catch {
+    catch (e) {
 
         res.status(400).json({ message: "Impossible de récupérer l'article" })
 

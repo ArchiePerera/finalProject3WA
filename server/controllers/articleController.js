@@ -1,10 +1,11 @@
 import Article from "../models/articleModel.js"
+import fs from "fs"
 
 export const createArticle = async (req, res) => {
 
     try {
 
-        const { title, summary, content, imageUrl, userId, likes, rating } = req.body
+        const { title, summary, content } = req.body
 
         // Sécurité
         if (title.trim() === "" ||
@@ -18,7 +19,8 @@ export const createArticle = async (req, res) => {
             title,
             summary,
             content,
-            userId //req.userId,
+            imageUrl: req.file && req.file.filename,
+            userId: req.userId,
         })
 
         await newArticle.save()
@@ -82,6 +84,7 @@ export const editArticle = async (req, res) => {
             title,
             summary,
             content,
+            imageUrl: req.file && req.file.filename,
         }
 
         await Article.findByIdAndUpdate(id, editArticle)
@@ -104,14 +107,30 @@ export const deleteArticle = async (req, res) => {
 
         const { id } = req.params
 
-        await Article.findByIdAndDelete(id)
+        const article = await Article.findById(id)
+
+        console.log(article.imageUrl)
+
+        const filePath = `../public/${article.imageUrl}`
+
+        console.log(filePath)
+
+        fs.unlink(filepath, (err) => {
+            if (err) {
+                throw err;
+            }
+        
+            console.log("Delete Image successfully.");
+        });
+
+         await Article.findByIdAndDelete(id)
 
         res.status(200).json({ message: "l'article a bien été supprimé" })
 
     }
     catch (e) {
 
-        res.status(400).json({ message: "Impossible de supprimer l'article" })
+        res.status(400).json({ message: "Impossible de supprimer l'article", e })
 
     }
 }

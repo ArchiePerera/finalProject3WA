@@ -18,7 +18,7 @@ const articleSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
-        default: "img-articles/default_article-img.webp",
+        default: "default_article-img.webp",
     },
     userId: {
         type: mongoose.Types.ObjectId,

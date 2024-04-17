@@ -5,12 +5,12 @@ import { upload_article } from "../middleware/multer.js"
 
 const articleRouter = express.Router()
 
-articleRouter.post("/new", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("image"), createArticle)
+articleRouter.post("/new", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("imageUrl"), createArticle)
 
 articleRouter.get("/", getAllArticles)
 articleRouter.get("/:id", getOneArticle)
 
-articleRouter.put("/edit/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("image"), editArticle)
+articleRouter.put("/edit/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("imageUrl"), editArticle)
 
 articleRouter.delete("/delete/:id", isLogged, isAuthorized(["admin"]), deleteArticle)
 

@@ -1,6 +1,6 @@
 import fs from "fs"
 
-export function deleteImage(filePath) {
+export function deleteFile(filePath) {
 
 
     fs.unlink(filePath, (error) => {
@@ -10,7 +10,7 @@ export function deleteImage(filePath) {
             return console.error("Un problème est survenue durant la suppression de l'image")
 
         }
-        
+
         console.log("Image supprimée avec succès");
 
     })

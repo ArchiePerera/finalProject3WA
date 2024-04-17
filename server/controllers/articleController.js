@@ -1,6 +1,6 @@
 import Article from "../models/articleModel.js"
 import fs from "fs"
-import { deleteImage } from "../utils/unlink.js"
+import { deleteFile } from "../utils/unlink.js"
 
 export const createArticle = async (req, res) => {
 
@@ -81,6 +81,12 @@ export const editArticle = async (req, res) => {
 
         const { title, summary, content } = req.body
 
+        const article = await Article.findById(id)
+
+        const filePath = `public/img-articles/${article.imageUrl}`
+
+        req.file && deleteFile(filePath)
+
         const editArticle = {
             title,
             summary,
@@ -110,11 +116,9 @@ export const deleteArticle = async (req, res) => {
 
         const article = await Article.findById(id)
 
-        console.log(article.imageUrl)
-
         const filePath = `public/img-articles/${article.imageUrl}`
 
-        deleteImage(filePath)
+        deleteFile(filePath)
 
          await Article.findByIdAndDelete(id)
 

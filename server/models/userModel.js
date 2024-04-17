@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     imageProfile: {
         type: String,
         required: true,
-        default: "default_profile.webp",
+        default: "img-profiles/default_profile.webp",
     },
     password: {
         type: String,

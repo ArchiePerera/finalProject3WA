@@ -1,5 +1,6 @@
 import Article from "../models/articleModel.js"
 import fs from "fs"
+import { deleteImage } from "../utils/unlink.js"
 
 export const createArticle = async (req, res) => {
 
@@ -111,21 +112,13 @@ export const deleteArticle = async (req, res) => {
 
         console.log(article.imageUrl)
 
-        const filePath = `../public/${article.imageUrl}`
+        const filePath = `public/img-articles/${article.imageUrl}`
 
-        console.log(filePath)
-
-        fs.unlink(filepath, (err) => {
-            if (err) {
-                throw err;
-            }
-        
-            console.log("Delete Image successfully.");
-        });
+        deleteImage(filePath)
 
          await Article.findByIdAndDelete(id)
 
-        res.status(200).json({ message: "l'article a bien été supprimé" })
+        res.status(200).json({ message: "L'article a bien été supprimé" })
 
     }
     catch (e) {

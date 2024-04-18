@@ -1,6 +1,6 @@
 import Article from "../models/articleModel.js"
-import fs from "fs"
-import { deleteFile } from "../utils/unlink.js"
+import { deleteFile } from "../utils/deleteFile.js"
+import { DEFAULT_IMAGE_ARTICLE } from "../config/defaultFiles.js"
 
 export const createArticle = async (req, res) => {
 
@@ -118,11 +118,22 @@ export const deleteArticle = async (req, res) => {
 
         const filePath = `public/img-articles/${article.imageUrl}`
 
-        deleteFile(filePath)
+        if (article.imageUrl === DEFAULT_IMAGE_ARTICLE) {
 
-         await Article.findByIdAndDelete(id)
+            await Article.findByIdAndDelete(id)
 
-        res.status(200).json({ message: "L'article a bien été supprimé" })
+            res.status(200).json({ message: "L'article a bien été supprimé" })
+
+        }
+        else {
+
+            deleteFile(filePath)
+            
+            await Article.findByIdAndDelete(id)
+
+            res.status(200).json({ message: "L'article a bien été supprimé" })
+
+        }
 
     }
     catch (e) {

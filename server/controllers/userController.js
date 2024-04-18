@@ -2,6 +2,8 @@ import User from "../models/userModel.js"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
+import { deleteFile } from "../utils/deleteFile.js"
+import { DEFAULT_IMAGE_PROFILE } from "../config/defaultFiles.js"
 
 dotenv.config()
 
@@ -172,26 +174,41 @@ export const modifyUser = async (req, res) => {
                     return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
                 }
             }
-
-            
+           
             const editUser = {
                 firstName,
                 lastName,
                 email,
+                imageProfile: req.file && req.file.filename,
+            }
+            
+            const user = await User.findById(id)
+
+            const filePath = `public/img-articles/${user.imageProfile}`
+
+            if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
+
+                await User.findByIdAndUpdate(id, editUser)
+            
+                res.status(200).json({ message: "Profil mis à jour" })
+
+            }
+            else {
+
+                deleteFile(filePath)
+
+                await User.findByIdAndUpdate(id, editUser)
+            
+                res.status(200).json({ message: "Profil mis à jour" })
+
             }
 
-
-            
-            await User.findByIdAndUpdate(id, editUser)
-            
-            res.status(200).json({ message: "Profil mis à jour" })
         }
         catch (e) {
 
             res.status(400).json({ message: "Impossible de mettre à jour le profil" })
 
         }
-
 }
 
 export const deleteUser = async (req, res) => {
@@ -200,10 +217,26 @@ export const deleteUser = async (req, res) => {
 
         const { id } = req.params
 
-        await User.findByIdAndDelete(id)
+        const user = await User.findById(id)
 
-        res.status(200).json({ message: "Utilisateur supprimé" })
+        const filePath = `public/img-profiles/${user.imageProfile}`
 
+        if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
+
+            await User.findByIdAndDelete(id)
+
+            res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
+
+        }
+        else {
+
+            deleteFile(filePath)
+            
+            await User.findByIdAndDelete(id)
+
+            res.status(200).json({ message: "L'utilisateur a bien été supprimé" })
+
+        }
     }
     catch (e) {
 

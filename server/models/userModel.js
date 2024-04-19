@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ["user", "admin", "mentor", "student"],
         default: "user",
+    },
+    article: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Article",
     }
 
 }, {

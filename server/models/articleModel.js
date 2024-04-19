@@ -20,10 +20,9 @@ const articleSchema = new mongoose.Schema({
         required: true,
         default: "default_article-img.webp",
     },
-    userId: {
-        type: mongoose.Types.ObjectId,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
     },
     likes: {
         type: Array,

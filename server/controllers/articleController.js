@@ -1,6 +1,7 @@
 import Article from "../models/articleModel.js"
 import { deleteFile } from "../utils/deleteFile.js"
 import { DEFAULT_IMAGE_ARTICLE } from "../config/defaultFiles.js"
+import mongoose from "mongoose"
 
 export const createArticle = async (req, res) => {
 
@@ -21,7 +22,7 @@ export const createArticle = async (req, res) => {
             summary,
             content,
             imageUrl: req.file && req.file.filename,
-            userId: req.userId,
+            author: req.userId,
         })
 
         await newArticle.save()
@@ -40,6 +41,7 @@ export const getAllArticles = async (req, res) => {
     try {
 
         const articles = await Article.find({})
+        .populate({path: "author", select: ["firstName", "lastName", "imageProfile"]}).exec()
 
         res.status(200).json(articles)
 
@@ -60,6 +62,7 @@ export const getOneArticle = async (req, res) => {
         const { id } = req.params
 
         const article = await Article.findById(id)
+        .populate({path: "author", select: ["firstName", "lastName", "imageProfile"]}).exec()
 
         res.status(200).json(article)
 

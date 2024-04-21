@@ -77,7 +77,9 @@ export const login = async (req, res) => {
         const user = await User.findOne({ email })
 
         if (!user) {
+
             return res.status(404).json({ message: "Aucun utilisateur enregistré avec ce mail" })
+
         }
 
         const isValidPWd = bcrypt.compareSync(password, user.password)
@@ -118,7 +120,7 @@ export const getAllUsers = async (req, res) => {
     try {
         
         // ON VA EXCLURE LE PASSWORD
-        const users = await User.find({}).select("-password")
+        const users = await User.find({}).select("-password").populate("articles").exec()
 
         res.status(200).json(users)
 
@@ -134,16 +136,16 @@ export const getAllUsers = async (req, res) => {
 export const getOneUser = async (req, res) => {
 
     try {
+
         const { id } = req.params;
         
         const currentUser = await User.findById(req.userId)
         const searchUser = await User.findById(id) 
-        
-        if (currentUser.role === "user" && currentUser.id !== searchUser.id) {
-            return res.status(403).json({ message: "Accès refusé" })
-        }
-        
-        const user = await User.findById(id)
+
+        console.log(currentUser.id)
+        console.log(searchUser.id)
+                
+        const user = await User.findById(id).select("-password").populate("articles").exec()
         
         res.status(200).json(user)
         
@@ -162,29 +164,47 @@ export const modifyUser = async (req, res) => {
             
             const { firstName, lastName, email } = req.body
 
+            const currentUser = await User.findById(req.userId)
+            const searchUser = await User.findById(id)
+
+            console.log(currentUser.role)
+
+            // seuls le propriètaire du compte et l'admin peuvent modifier ces informations
+
+            if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
+
+                return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
+    
+            }
+
             console.log(req.body)
             
             // Sécurité
             
             if (firstName && lastName && email) {
+
                 if(firstName && firstName.trim() === "" ||
                 lastName && lastName.trim() === "" ||
                 email && email.trim() === ""
                 ) {
+
                     return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
+
                 }
             }
            
             const editUser = {
+
                 firstName,
                 lastName,
                 email,
                 imageProfile: req.file && req.file.filename,
+
             }
             
             const user = await User.findById(id)
 
-            const filePath = `public/img-articles/${user.imageProfile}`
+            const filePath = `public/img-articles/${ user.imageProfile }`
 
             if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
 
@@ -220,6 +240,17 @@ export const deleteUser = async (req, res) => {
         const user = await User.findById(id)
 
         const filePath = `public/img-profiles/${user.imageProfile}`
+
+        const currentUser = await User.findById(req.userId)
+        const searchUser = await User.findById(id)
+
+        // seuls le propriètaire du compte et l'admin peuvent effacer ces informations
+
+        if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
+
+            return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
+    
+        }
 
         if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
 

@@ -11,35 +11,46 @@ export const isLogged = (req, res, next) => {
     // J'extrais le token du headers de la requête
     const token = authToken && authToken.split(" ")[1]
     
-    if(!token){
+    if (!token) {
+
         return res.status(401).json({message: "Vous n'êtes pas authentifié"})
+
     }
     
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         
         if (err) {
+
             return res.status(403).json({message: "Token invalide"})
+
         }
         
         // Je créé un nouveau champ (clé) dans la REQ
         
         req.userId = decoded._id; // L'ID de la personne connectée
+
         next();
+
     })   
 }
 
 export const isAuthorized = (roles) => {
+
     return async (req, res, next) =>{
         
         const user = await User.findById(req.userId)
         
-        if(!user){
-            return res.status(404).json({message: "Utilisateur introuvable"})
+        if (!user){
+
+            return res.status(404).json({ message: "Utilisateur introuvable" })
+
         }
              
         // Gestion des différents rôles
-        if(!roles.includes(user.role)){
-            return res.status(403).json({message: "Vos permissions sont insuffisantes pour accéder à la ressource"})
+        if (!roles.includes(user.role)){
+
+            return res.status(403).json({ message: "Vos permissions sont insuffisantes pour accéder à la ressource" })
+
         }
         
         next();

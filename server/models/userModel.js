@@ -41,10 +41,10 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "admin", "mentor", "student"],
         default: "user",
     },
-    article: {
+    articles: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Article",
-    }
+    }]
 
 }, {
     timestamps: true,

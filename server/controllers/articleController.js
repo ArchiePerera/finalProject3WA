@@ -1,7 +1,7 @@
 import Article from "../models/articleModel.js"
+import User from "../models/userModel.js"
 import { deleteFile } from "../utils/deleteFile.js"
 import { DEFAULT_IMAGE_ARTICLE } from "../config/defaultFiles.js"
-import User from "../models/userModel.js"
 
 export const createArticle = async (req, res) => {
 
@@ -92,8 +92,6 @@ export const editArticle = async (req, res) => {
         const article = await Article.findById(id).populate("author", "-password")
 
         const filePath = `public/img-articles/${ article.imageUrl }`
-
-        // req.file && deleteFile(filePath)
 
         const currentUser = await User.findById(req.userId)
 

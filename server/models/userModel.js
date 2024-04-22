@@ -9,12 +9,14 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
     },
+
     lastName: {
         type: String,
         required: true,
         lowercase: true,
         trim: true,
     },
+
     email: {
         type: String,
         unique: true,
@@ -23,11 +25,13 @@ const userSchema = new mongoose.Schema({
         trim: true,
         maxLength: 320,
     },
+
     imageProfile: {
         type: String,
         required: true,
         default: "default_profile.webp",
     },
+
     password: {
         type: String,
         required: true,
@@ -35,12 +39,14 @@ const userSchema = new mongoose.Schema({
         minLength: 8,
         maxLength: 55,
     },
+
     role: {
         type: String,
         required: true,
         enum: ["user", "admin", "mentor", "student"],
         default: "user",
     },
+
     articles: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Article",
@@ -56,7 +62,9 @@ userSchema.pre("save", async function (next) {
 
     // Si le mot de passe n'a pas été modifié
     if (!this.isModified("password")) {
+
         return next()
+
     }
 
     try {
@@ -65,7 +73,8 @@ userSchema.pre("save", async function (next) {
         this.password = await bcrypt.hash(this.password, salt)
         next()
 
-    } catch (e) {
+    } 
+    catch (e) {
 
         next(e)
 

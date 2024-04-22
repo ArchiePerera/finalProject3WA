@@ -223,6 +223,16 @@ export const addLike = async (req, res) => {
     }
 }
 
+export const getAllLikes = async (req, res) => {
+
+    const { id } = req.params
+
+    likes = await Article.findById(id).select("likes")
+
+    res.status(200).json({ likes })
+
+}
+
 export const addFavorite = async (req, res) => {
 
     try {

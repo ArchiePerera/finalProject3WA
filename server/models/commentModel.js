@@ -6,16 +6,10 @@ const commentSchema = mongoose.Schema({
         type: String, 
         required: true
     },
-    
-    rating: {
-        type: Number,
-        required: true,
-        max: 5
-    },
-    
+        
     userId: {
         type: mongoose.Types.ObjectId,
-        ref: "User", // Pour relier ma collection User avec Comment
+        ref: "User",
         required: true
     },
     

@@ -46,7 +46,7 @@ export const getAllArticles = async (req, res) => {
     try {
 
         const articles = await Article.find({})
-        .populate({ path: "author", select: ["firstName", "lastName", "imageProfile"] }).exec()
+        .populate({ path: "author", select: ["firstName", "lastName", "imageProfile"] })
 
         res.status(200).json(articles)
 
@@ -67,7 +67,7 @@ export const getOneArticle = async (req, res) => {
         const { id } = req.params
 
         const article = await Article.findById(id)
-        .populate({ path: "author", select: ["firstName", "lastName", "imageProfile"] }).exec()
+        .populate({ path: "author", select: ["firstName", "lastName", "imageProfile"] })
 
         res.status(200).json(article)
 
@@ -102,7 +102,9 @@ export const editArticle = async (req, res) => {
         summary.trim() === "" ||
         content.trim() === ""
         ){
+
             return res.status(400).json({ message: "Veuillez remplir tous les champs" })
+
         }
 
         const editArticle = {

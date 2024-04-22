@@ -36,15 +36,21 @@ export const register = async (req, res) => {
         const verifEmail = await User.findOne({ email })
 
         if (verifEmail) {
+
             return res.status(401).json({ message: "Cet email est déjà enregistré" })
+
         }
 
         // Vérification du MDP respectant la regex
         if (!checkPwd.test(password)) {
+
             return res.status(401).json({ message: "Le mot de passe ne respecte pas les conditions" })
+
         }
         if (!checkEmail.test(email)) {
+
             return res.status(401).json({ message: "l'email n'est pas valide"})
+
         }
 
         const newUser = new User({
@@ -116,7 +122,6 @@ export const getAllUsers = async (req, res) => {
 
     try {
         
-        // ON VA EXCLURE LE PASSWORD
         const users = await User.find({}).select("-password").populate("articles")
 
         res.status(200).json(users)
@@ -135,11 +140,7 @@ export const getOneUser = async (req, res) => {
     try {
 
         const { id } = req.params;
-        
-        const currentUser = await User.findById(req.userId)
-
-        const searchUser = await User.findById(id) 
-                
+                        
         const user = await User.findById(id).select("-password").populate("articles")
         
         res.status(200).json(user)

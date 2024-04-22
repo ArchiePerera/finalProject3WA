@@ -1,5 +1,4 @@
 import Article from "../models/articleModel.js"
-import { authForChange } from "../utils/authForChanges.js"
 import { deleteFile } from "../utils/deleteFile.js"
 import { DEFAULT_IMAGE_ARTICLE } from "../config/defaultFiles.js"
 import User from "../models/userModel.js"
@@ -100,9 +99,13 @@ export const editArticle = async (req, res) => {
 
         const searchUser = article.author
 
-        // seuls le propriètaire de l'article et l'admin peuvent modifier ces informations
-
-        authForChange(currentUser, searchUser)
+        // Sécurité
+        if (title.trim() === "" ||
+        summary.trim() === "" ||
+        content.trim() === ""
+        ){
+            return res.status(400).json({ message: "Veuillez remplir tous les champs" })
+        }
 
         const editArticle = {
     
@@ -111,6 +114,14 @@ export const editArticle = async (req, res) => {
             content,
             imageUrl: req.file && req.file.filename,
             
+        }
+
+        // seuls le propriètaire de l'article et l'admin peuvent modifier ces informations
+
+        if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
+
+            return res.status(403).json({ message: "Vous n'êtes pas l'auteur de l'article" })
+    
         }
 
         if ( req.file && article.imageUrl === DEFAULT_IMAGE_ARTICLE ) {
@@ -150,17 +161,15 @@ export const deleteArticle = async (req, res) => {
         const filePath = `public/img-articles/${ article.imageUrl }`
 
         const currentUser = await User.findById(req.userId)
-        
+
         const searchUser = article.author._id
 
         // seuls le propriètaire de l'article et l'admin peuvent effacer ces informations
 
-        authForChange(curentUser, searchUser)
-
-        if (currentUser._id.toString() !== searchUser._id.toString() && currentUser.role !== "admin") {
+        if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
 
             return res.status(403).json({ message: "Vous n'êtes pas l'auteur de l'article" })
-
+    
         }
 
         if (article.imageUrl === DEFAULT_IMAGE_ARTICLE) {

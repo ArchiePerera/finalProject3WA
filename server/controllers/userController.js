@@ -4,7 +4,6 @@ import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 import { deleteFile } from "../utils/deleteFile.js"
 import { DEFAULT_IMAGE_PROFILE } from "../config/defaultFiles.js"
-import { authForChange } from "../utils/authForChanges.js"
 
 dotenv.config()
 
@@ -118,7 +117,7 @@ export const getAllUsers = async (req, res) => {
     try {
         
         // ON VA EXCLURE LE PASSWORD
-        const users = await User.find({}).select("-password").populate("articles").exec()
+        const users = await User.find({}).select("-password").populate("articles")
 
         res.status(200).json(users)
 
@@ -138,12 +137,10 @@ export const getOneUser = async (req, res) => {
         const { id } = req.params;
         
         const currentUser = await User.findById(req.userId)
-        const searchUser = await User.findById(id) 
 
-        console.log(currentUser.id)
-        console.log(searchUser.id)
+        const searchUser = await User.findById(id) 
                 
-        const user = await User.findById(id).select("-password").populate("articles").exec()
+        const user = await User.findById(id).select("-password").populate("articles")
         
         res.status(200).json(user)
         
@@ -168,9 +165,11 @@ export const modifyUser = async (req, res) => {
 
             // seuls le propriètaire du compte et l'admin peuvent modifier ces informations
 
-            authForChange(currentUser, searchUser)
+            if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
 
-            console.log(req.body)
+                return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
+        
+            }
             
             // Sécurité
             
@@ -240,7 +239,11 @@ export const deleteUser = async (req, res) => {
 
         // seuls le propriètaire du compte et l'admin peuvent effacer ces informations
 
-        authForChange(currentUser, searchUser)
+        if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
+
+            return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
+    
+        }
 
         if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
 

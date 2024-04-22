@@ -1,6 +1,6 @@
 import Article from "../models/articleModel.js"
+import { authForChange } from "../utils/authForChanges.js"
 import { deleteFile } from "../utils/deleteFile.js"
-import { modifyArticle } from "../utils/editArticle.js"
 import { DEFAULT_IMAGE_ARTICLE } from "../config/defaultFiles.js"
 import User from "../models/userModel.js"
 
@@ -88,40 +88,34 @@ export const editArticle = async (req, res) => {
 
         const { id } = req.params
 
-        const article = await Article.findById(id).populate("author").exec()
+        const { title, summary, content } = req.body
+
+        const article = await Article.findById(id).populate("author", "-password")
 
         const filePath = `public/img-articles/${ article.imageUrl }`
 
         // req.file && deleteFile(filePath)
 
-
-
         const currentUser = await User.findById(req.userId)
-        const searchUser = article.author._id
+
+        const searchUser = article.author
 
         // seuls le propriètaire de l'article et l'admin peuvent modifier ces informations
 
-console.log(currentUser._id)
-console.log(searchUser._id)  
+        authForChange(currentUser, searchUser)
 
-        if (currentUser._id.toString() !== searchUser._id.toString() && currentUser.role !== "admin") {
-
-            return res.status(403).json({ message: "Vous n'êtes pas l'auteur de l'article" })
-
+        const editArticle = {
+    
+            title,
+            summary,
+            content,
+            imageUrl: req.file && req.file.filename,
+            
         }
 
         if ( req.file && article.imageUrl === DEFAULT_IMAGE_ARTICLE ) {
 
-            modifyArticle(req, id)
-
-            // const editArticle = {
-            //     title,
-            //     summary,
-            //     content,
-            //     imageUrl: req.file && req.file.filename,
-            // }
-    
-            // await Article.findByIdAndUpdate( id, editArticle )
+            await Article.findByIdAndUpdate( id, editArticle )
     
             res.status(200).json({ message: "Article bien mis à jour" })
 
@@ -130,23 +124,11 @@ console.log(searchUser._id)
 
             deleteFile(filePath)
 
-            // const editArticle = {
-            //     title,
-            //     summary,
-            //     content,
-            //     imageUrl: req.file && req.file.filename,
-            // }
-    
-            // await Article.findByIdAndUpdate( id, editArticle )
-
-            modifyArticle(req, id)
+            await Article.findByIdAndUpdate( id, editArticle )
     
             res.status(200).json({ message: "Article bien mis à jour" })
 
         }
-
-
-
     }
 
     catch (e) {
@@ -168,12 +150,12 @@ export const deleteArticle = async (req, res) => {
         const filePath = `public/img-articles/${ article.imageUrl }`
 
         const currentUser = await User.findById(req.userId)
+        
         const searchUser = article.author._id
 
         // seuls le propriètaire de l'article et l'admin peuvent effacer ces informations
 
-console.log(currentUser._id)
-console.log(searchUser._id)  
+        authForChange(curentUser, searchUser)
 
         if (currentUser._id.toString() !== searchUser._id.toString() && currentUser.role !== "admin") {
 

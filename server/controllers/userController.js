@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 import { deleteFile } from "../utils/deleteFile.js"
 import { DEFAULT_IMAGE_PROFILE } from "../config/defaultFiles.js"
+import { authForChange } from "../utils/authForChanges.js"
 
 dotenv.config()
 
@@ -94,9 +95,6 @@ export const login = async (req, res) => {
             _id: user._id
         }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION })
 
-
-
-        // ON RENVOIE ss MDP
         res.status(200).json({
             _id: user._id,
             firstName: user.firstName,
@@ -165,17 +163,12 @@ export const modifyUser = async (req, res) => {
             const { firstName, lastName, email } = req.body
 
             const currentUser = await User.findById(req.userId)
-            const searchUser = await User.findById(id)
 
-            console.log(currentUser.role)
+            const searchUser = await User.findById(id)
 
             // seuls le propriètaire du compte et l'admin peuvent modifier ces informations
 
-            if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
-
-                return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
-    
-            }
+            authForChange(currentUser, searchUser)
 
             console.log(req.body)
             
@@ -242,15 +235,12 @@ export const deleteUser = async (req, res) => {
         const filePath = `public/img-profiles/${user.imageProfile}`
 
         const currentUser = await User.findById(req.userId)
+
         const searchUser = await User.findById(id)
 
         // seuls le propriètaire du compte et l'admin peuvent effacer ces informations
 
-        if (currentUser.id !== searchUser.id && currentUser.role !== "admin") {
-
-            return res.status(403).json({ message: "Vous n'êtes pas le propriétaire du compte" })
-    
-        }
+        authForChange(currentUser, searchUser)
 
         if (user.imageProfile === DEFAULT_IMAGE_PROFILE) {
 

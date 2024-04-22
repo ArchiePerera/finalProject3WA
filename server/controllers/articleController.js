@@ -201,3 +201,45 @@ export const deleteArticle = async (req, res) => {
 
     }
 }
+
+export const addLike = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await Article.updateOne(
+            { _id: id },
+            { $addToSet: { likes: req.userId } }
+        )
+    
+        res.status(200).json({ message: "Like enregistré" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible d'ajouter un like" })
+
+    }
+}
+
+export const addFavorite = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await Article.updateOne(
+            { _id: id },
+            { $addToSet: { favorites: req.userId } }
+        )
+    
+        res.status(200).json({ message: "Favori enregistré" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible d'ajouter l'article en favori" })
+
+    }
+}

@@ -35,7 +35,13 @@ const articleSchema = new mongoose.Schema({
         required: true,
         default: [],
     },
-    
+
+    favorites: {
+        type: Array,
+        required: true,
+        default: [],
+    },
+
     rating: {
         type: Array,
         required: true,

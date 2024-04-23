@@ -223,6 +223,27 @@ export const addLike = async (req, res) => {
     }
 }
 
+export const deleteLike = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await Article.updateOne(
+            { _id: id },
+            { pull: { likes: req.userId } }
+        )
+
+        res.status(400).json({ message: "le like a bien été supprimé" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de supprimer le like" })
+
+    }
+}
+
 export const getAllLikes = async (req, res) => {
 
     const { id } = req.params
@@ -250,6 +271,45 @@ export const addFavorite = async (req, res) => {
     catch (e) {
 
         res.status(400).json({ message: "Impossible d'ajouter l'article en favori" })
+
+    }
+}
+
+export const deleteFavorite = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        await Article.updateOne(
+            { _id: id },
+            { pull: { favorites: req.userId } }
+        )
+
+        res.status(400).json({ message: "le favori a bien été supprimé" })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de supprimer le favori" })
+
+    }
+}
+
+export const getAllFavorites = (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        const favorites = await Article.findById(id).select("favorites")
+
+        res.status(200).json({ favorites })
+
+    }
+    catch (e) {
+
+        res.status(400).json({ message: "Impossible de récupérer les favoris" })
 
     }
 }

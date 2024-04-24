@@ -57,7 +57,6 @@ export const getAllArticles = async (req, res) => {
         res.status(400).json({ message: "Impossible de récupérer les articles" })
 
     }
-
 }
 
 export const getOneArticle = async (req, res) => {
@@ -78,7 +77,6 @@ export const getOneArticle = async (req, res) => {
         res.status(400).json({ message: "Impossible de récupérer l'article" })
 
     }
-
 }
 
 export const editArticle = async (req, res) => {
@@ -147,7 +145,6 @@ export const editArticle = async (req, res) => {
         res.status(400).json({ message: "Impossible de mettre à jour l'article" })
 
     }
-
 }
 
 export const deleteArticle = async (req, res) => {

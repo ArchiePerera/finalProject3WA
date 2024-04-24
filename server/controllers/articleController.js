@@ -293,7 +293,7 @@ export const deleteFavorite = async (req, res) => {
     }
 }
 
-export const getAllFavorites = (req, res) => {
+export const getAllFavorites = async (req, res) => {
 
     try {
 

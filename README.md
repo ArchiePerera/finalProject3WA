@@ -34,40 +34,40 @@ demarrer le serveur
 
 ###### UTILISATEURS
 
-| HTTP Verbs | Endpoints | Action |
-| --- | --- | --- |
-| POST | /api/users/register | enregistrer un nouvel utilisateur |
-| POST | /api/users/login | se connecter |
-| GET | /api/users/ | voir tous les utilisateurs |
-| GET | /api/users/:id | voir un seul utilisateur |
-| PUT | /api/users/edit/:id | modifier les informations de l'utilisateur |
-| DELETE | /api/users/delete/:id | supprimer l'utilisateur |
+| HTTP Verbs | Endpoints | Action | Autorisation |
+| --- | --- | --- | --- |
+| POST | /api/users/register | enregistrer un nouvel utilisateur | tous |
+| POST | /api/users/login | se connecter | tous |
+| GET | /api/users/ | voir tous les utilisateurs | admin |
+| GET | /api/users/:id | voir un seul utilisateur | admin, mentor, student, user |
+| PUT | /api/users/edit/:id | modifier les informations de l'utilisateur | admin, mentor, student, user |
+| DELETE | /api/users/delete/:id | supprimer l'utilisateur | admin, mentor (self), student (self), user (self) |
 
 ###### ARTICLES
 
-| HTTP Verbs | Endpoints | Action |
-| --- | --- | --- |
-| POST | /api/articles/new | créer un nouvel article |
-| GET | /api/articles/ | voir tous les articles |
-| GET | /api/articles/:id | voir un seul article |
-| PUT | /api/articles/edit/:id | modifier un article |
-| DELETE | /api/articles/delete/:id | supprimer un article |
+| HTTP Verbs | Endpoints | Action | Autorisation |
+| --- | --- | --- | --- |
+| POST | /api/articles/new | créer un nouvel article | admin, mentor, student, user |
+| GET | /api/articles/ | voir tous les articles | tous |
+| GET | /api/articles/:id | voir un seul article | tous |
+| PUT | /api/articles/edit/:id | modifier un article |  admin, mentor (self), student (self), user (self) |
+| DELETE | /api/articles/delete/:id | supprimer un article |  admin, mentor (self), student (self), user (self) |
 
 ###### ARTICLES : LIKES & FAVORIS
 
-| HTTP Verbs | Endpoints | Action |
-| --- | --- | --- |
-| POST | /api/articles/addlike/:id | ajouter un like |
-| DELETE | /api/articles/deletelike/:id | supprimer un like |
-| POST | /api/articles/addfavorite/:id | ajouter en favori |
-| DELETE | /api/articles/deletefavorite/:id | supprimer le favori |
+| HTTP Verbs | Endpoints | Action | Autorisation |
+| --- | --- | --- | --- |
+| POST | /api/articles/addlike/:id | ajouter un like | admin, mentor, student, user |
+| DELETE | /api/articles/deletelike/:id | supprimer un like | admin, mentor, student, user |
+| POST | /api/articles/addfavorite/:id | ajouter en favori | admin, mentor, student, user |
+| DELETE | /api/articles/deletefavorite/:id | supprimer le favori | admin, mentor, student, user |
 
 ###### COMMENTAIRES
 
-| HTTP Verbs | Endpoints | Action |
-| --- | --- | --- |
-| POST | /api/comments/new/:articleId | créer un nouvel article |
-| GET | /api/comments/:articleId| voir tous les articles |
+| HTTP Verbs | Endpoints | Action | Autorisation |
+| --- | --- | --- | --- |
+| POST | /api/comments/new/:articleId | créer un nouveau commentaire |  admin, mentor, student, user |
+| GET | /api/comments/:articleId| voir tous les commentaires | tous |
 
 ##### FORMATS DE REQUÊTES
 

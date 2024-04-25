@@ -12,6 +12,6 @@ userRouter.get("/", isLogged, isAuthorized(["admin"]), getAllUsers)
 userRouter.get("/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_profile.single("image"), getOneUser)
 
 userRouter.put("/edit/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_profile.single("imageProfile"), modifyUser)
-userRouter.delete("/delete/:id", isLogged, isAuthorized(["admin"]), deleteUser)
+userRouter.delete("/delete/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), deleteUser)
 
 export default userRouter

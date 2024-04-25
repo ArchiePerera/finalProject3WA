@@ -110,9 +110,9 @@ content,
 articleId
 ```
 
-##### FORMATS DE REQUÊTES
+##### FORMATS DE REPONSE
 
-Réponse en JSON
+Réponses en JSON
 
 #### Front
 

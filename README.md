@@ -40,7 +40,7 @@ demarrer le serveur
 | POST | /api/users/login | se connecter | tous |
 | GET | /api/users/ | voir tous les utilisateurs | admin |
 | GET | /api/users/:id | voir un seul utilisateur | admin, mentor, student, user |
-| PUT | /api/users/edit/:id | modifier les informations de l'utilisateur | admin, mentor, student, user |
+| PUT | /api/users/edit/:id | modifier les informations de l'utilisateur | admin, mentor (self), student (self), user (self) |
 | DELETE | /api/users/delete/:id | supprimer l'utilisateur | admin, mentor (self), student (self), user (self) |
 
 ###### CHANGING ROLE

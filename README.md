@@ -18,11 +18,13 @@ Créez une base de données MongoDB et récupérer l'URI pour la connection pour
 
 créer un dossier `.env` puis renseignez chaque variable
 
-`` PORT = VOTRE_PORT
- BASE_URL = VOTRE_URL
- MONGO_URL = VOTRE_BASE_DE_DONNEE_MONGO
- JWT_SECRET = VOTRE_CODE_SECRET
- JWT_EXPIRATION = LA_DUREE_CHOISIE_DE_VOTRE_TOKEN`` 
+``` 
+PORT = VOTRE_PORT
+BASE_URL = VOTRE_URL
+MONGO_URL = VOTRE_BASE_DE_DONNEE_MONGO
+JWT_SECRET = VOTRE_CODE_SECRET
+JWT_EXPIRATION = LA_DUREE_CHOISIE_DE_VOTRE_TOKEN
+``` 
 
 demarrer le serveur
 
@@ -62,6 +64,8 @@ demarrer le serveur
 
 ###### COMMENTAIRES
 
+| HTTP Verbs | Endpoints | Action |
+| --- | --- | --- |
 | POST | /api/comments/new/:articleId | créer un nouvel article |
 | GET | /api/comments/:articleId| voir tous les articles |
 
@@ -69,34 +73,42 @@ demarrer le serveur
 
 ###### POST REGISTER
 
-Sans image : urlencoded
-Avec image: form-data
+- Sans image : urlencoded
+- Avec image: form-data
 
-``firstname,
+```
+firstname,
 lastname,
 email,
 imageProfile, (facultatif)
-password (min 8 caractères, 1 majuscule, 1 minuscule, 1 caractèrespécial, 1 chiffre)``
+password (min 8 caractères, 1 majuscule, 1 minuscule, 1 caractèrespécial, 1 chiffre)
+```
 
 ###### POST LOGIN
 
-``email,
-password ``
+```
+email,
+password 
+```
 
 ###### POST NEW ARTICLE
 
-Sans image : urlencoded
-Avec image: form-data
+- Sans image : urlencoded
+- Avec image: form-data
 
-``title,
+```
+title,
 summary,
 content,
-imageUrl, (facultatif)``
+imageUrl, (facultatif)
+```
 
 ###### POST NEW COMMENT
 
-``content,
-articleId``
+```
+content,
+articleId
+```
 
 ##### FORMATS DE REQUÊTES
 

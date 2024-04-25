@@ -43,6 +43,12 @@ demarrer le serveur
 | PUT | /api/users/edit/:id | modifier les informations de l'utilisateur | admin, mentor, student, user |
 | DELETE | /api/users/delete/:id | supprimer l'utilisateur | admin, mentor (self), student (self), user (self) |
 
+###### CHANGING ROLE
+
+| HTTP Verbs | Endpoints | Action | Autorisation |
+| --- | --- | --- | --- |
+| POST | /api/admin/changerole/:id | changer le role d'un utilisateur | admin |
+
 ###### ARTICLES
 
 | HTTP Verbs | Endpoints | Action | Autorisation |

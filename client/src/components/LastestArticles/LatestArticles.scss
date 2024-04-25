@@ -1,0 +1,28 @@
+.latest-card article {
+    h3 {
+        margin-top: 0;
+    }
+    img {
+        width: 50%;
+        height: 8em;
+        object-fit: cover;
+        object-position: top;
+
+    }
+    &:nth-child(odd) {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        img {
+            border-top-left-radius: 70%;
+        }
+    }
+    &:nth-child(even) {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        img {
+            border-bottom-right-radius: 70%;
+        }
+    }
+}

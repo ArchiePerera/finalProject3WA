@@ -15,5 +15,7 @@ articleRouter.get("/:id", getOneArticle)
 articleRouter.put("/edit/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("imageUrl"), editArticle)
 
 articleRouter.delete("/delete/:id", isLogged, isAuthorized(["admin"]), deleteArticle)
+articleRouter.post("/deletelike/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), addLike)
+articleRouter.post("/deletefavorite/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), addFavorite)
 
 export default articleRouter

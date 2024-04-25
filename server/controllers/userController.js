@@ -64,7 +64,7 @@ export const register = async (req, res) => {
         // LE HOOK PRE SERA EXECUTE AVANT DE SAUVEGARDER EN BDD (Hash)
         await newUser.save()
 
-        res.status(200).json({ message: "Compte créé avec succès" })
+        res.status(201).json({ message: "Compte créé avec succès" })
 
     }
     catch (e) {

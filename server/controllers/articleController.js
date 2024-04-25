@@ -32,7 +32,7 @@ export const createArticle = async (req, res) => {
             { $addToSet: { articles: article._id } }
         )
 
-        res.status(200).json({ message: "Article créé avec succès" })
+        res.status(201).json({ message: "Article créé avec succès" })
 
     } catch (e) {
 
@@ -210,7 +210,7 @@ export const addLike = async (req, res) => {
             { $addToSet: { likes: req.userId } }
         )
     
-        res.status(200).json({ message: "Like enregistré" })
+        res.status(201).json({ message: "Like enregistré" })
 
     }
     catch (e) {
@@ -262,7 +262,7 @@ export const addFavorite = async (req, res) => {
             { $addToSet: { favorites: req.userId } }
         )
     
-        res.status(200).json({ message: "Favori enregistré" })
+        res.status(201).json({ message: "Favori enregistré" })
 
     }
     catch (e) {
@@ -283,7 +283,7 @@ export const deleteFavorite = async (req, res) => {
             { pull: { favorites: req.userId } }
         )
 
-        res.status(400).json({ message: "le favori a bien été supprimé" })
+        res.status(200).json({ message: "le favori a bien été supprimé" })
 
     }
     catch (e) {

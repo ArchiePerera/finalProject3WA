@@ -23,7 +23,7 @@ export const addNewComment = async (req, res) => {
         
         await newComment.save();
         
-        res.status(200).json({ messsage: "Commentaire ajouté avec succès" })
+        res.status(201).json({ messsage: "Commentaire ajouté avec succès" })
         
     } 
     catch (e) {

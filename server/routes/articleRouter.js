@@ -1,5 +1,5 @@
 import express from "express"
-import { createArticle, getAllArticles, getOneArticle, editArticle, deleteArticle, addLike, addFavorite } from "../controllers/articleController.js"
+import { createArticle, getAllArticles, getOneArticle, editArticle, deleteArticle, addLike, addFavorite, deleteLike, deleteFavorite } from "../controllers/articleController.js"
 import { isLogged, isAuthorized } from "../middleware/auth.js"
 import { upload_article } from "../middleware/multer.js"
 
@@ -15,7 +15,7 @@ articleRouter.get("/:id", getOneArticle)
 articleRouter.put("/edit/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), upload_article.single("imageUrl"), editArticle)
 
 articleRouter.delete("/delete/:id", isLogged, isAuthorized(["admin"]), deleteArticle)
-articleRouter.post("/deletelike/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), addLike)
-articleRouter.post("/deletefavorite/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), addFavorite)
+articleRouter.delete("/deletelike/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), deleteLike)
+articleRouter.delete("/deletefavorite/:id", isLogged, isAuthorized(["admin", "mentor", "student", "user"]), deleteFavorite)
 
 export default articleRouter

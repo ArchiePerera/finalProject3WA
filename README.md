@@ -8,7 +8,7 @@
 
 ouvrir le terminal et accéder au dossier `server`
 
-`cd your_path/server`
+`cd VOTRE_CHEMIN/server`
 
 installer les `node_modules`
 
@@ -120,6 +120,17 @@ articleId
 
 Réponses en JSON
 
+#### Sécurité
+
+Afin de maximiser la sécurité des échangesVeillez à bien renseigner l'adresse du client dans le "CORS" du server.
+Dans le dossier `server`, dans le fichier `server.js` :
+
+```
+app.use(cors({
+    origin: "URL_DU_CLIENT:PORT_DU_CLIENT"
+}))
+```
+
 #### Front
 
 ouvrir le terminal et accéder au dossier `client`
@@ -133,8 +144,3 @@ installer les `node_modules`
 demarrer le serveur
 
 `npm run dev`
-
-### Fonctionnement de l'API
-
-Description des schemas...
-Et test de connexion sur terminal linux

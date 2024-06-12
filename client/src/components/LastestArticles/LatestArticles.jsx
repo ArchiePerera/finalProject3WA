@@ -23,6 +23,7 @@ const LatestArticles = ({ arrayArticles }) => {
     return (
         <section className="container">
             <h2>Derniers articles</h2>
+            {LatestArticles.length > 0 ? 
             <div className="posts">
                 {arrayArticles.map((a) => (
                     <article key={a._id} className="post">
@@ -49,7 +50,7 @@ const LatestArticles = ({ arrayArticles }) => {
                         </NavLink>
                     </article>
                 ))}
-            </div>
+            </div> : <h3>Aucun article trouvé</h3>}
         </section>
     )
 }

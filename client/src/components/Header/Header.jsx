@@ -22,7 +22,7 @@ const Header = () => {
             </div>
             <div className="menu">
                 <ul>
-                    <Link to="/profile">Archie Perera</Link>
+                    <Link to="/profile/:id">Archie Perera</Link>
                     <Link to="/article/add">Créer un article</Link>
                     <Link to="/authors">Voir les auteurs</Link>
                     <Link to="/logout">Se déconnecter</Link>

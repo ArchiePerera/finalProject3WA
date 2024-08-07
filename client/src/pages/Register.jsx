@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 
-
 const Register = () => {
 
     const [userData, setUserData] = useState({
@@ -18,6 +17,7 @@ const Register = () => {
             return {...prevState, [e.target.name] : e.target.value}
         })
     }
+  
 
 
     return (
